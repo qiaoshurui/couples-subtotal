@@ -8,7 +8,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
-	"github.com/qiaoshurui/couples-subtotal/app/examples/router"
+	examples "github.com/qiaoshurui/couples-subtotal/app/examples/router"
+
+	couples "github.com/qiaoshurui/couples-subtotal/app/couples/router"
 	"github.com/qiaoshurui/couples-subtotal/common/global"
 	"github.com/qiaoshurui/couples-subtotal/common/initialize"
 	"github.com/spf13/cobra"
@@ -52,7 +54,8 @@ func initRouter() error {
 		c.String(http.StatusOK, "ok")
 	})
 
-	router.InitHelloRouter(global.Router)
+	examples.InitHelloRouter(global.Router)
+	couples.InitCoupleRouter(global.Router)
 
 	err := global.Router.Run(fmt.Sprintf("%s:%d", global.Config.Server.Http.Host, global.Config.Server.Http.Port))
 	if err != nil {

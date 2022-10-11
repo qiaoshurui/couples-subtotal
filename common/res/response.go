@@ -36,17 +36,22 @@ func ErrorDefault(c *gin.Context) {
 		Msg:  ERROR_MSG,
 	})
 }
-
+func ParamError(c *gin.Context) {
+	c.JSON(http.StatusOK, &Response{
+		Code: ERROR_CODE,
+		Msg:  PARAM_ERROR,
+	})
+}
 func Error(c *gin.Context, code, msg string) {
 	c.JSON(http.StatusOK, &Response{
-		Code: code,
+		Code: ERROR_CODE,
 		Msg:  msg,
 	})
 }
 
 func ErrorData(c *gin.Context, code, msg string, data interface{}) {
 	c.JSON(http.StatusOK, &Response{
-		Code: code,
+		Code: ERROR_CODE,
 		Msg:  msg,
 		Data: data,
 	})

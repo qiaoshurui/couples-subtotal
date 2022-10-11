@@ -11,6 +11,7 @@ const (
 	SUCCESS_MSG   = "Success"
 	ERROR_MSG     = "Server Error"
 	PARAM_MISSING = "param missing"
+	PARAM_ERROR   = "param error" //参数错误
 )
 
 type resCode struct {

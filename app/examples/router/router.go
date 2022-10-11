@@ -4,7 +4,9 @@
 
 package router
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 func InitHelloRouter(r *gin.Engine) *gin.Engine {
 	v1 := r.Group("/api/v1")

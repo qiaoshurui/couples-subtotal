@@ -2,7 +2,7 @@ package apis
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/qiaoshurui/couples-subtotal/app/couples/model/request"
+	"github.com/qiaoshurui/couples-subtotal/app/couples/model"
 	"github.com/qiaoshurui/couples-subtotal/app/couples/service"
 	"github.com/qiaoshurui/couples-subtotal/common/api"
 	"github.com/qiaoshurui/couples-subtotal/common/logger"
@@ -17,7 +17,7 @@ type User struct {
 // SignUpHandler 注册请求函数
 func (u *User) SignUpHandler(c *gin.Context) {
 	//获取参数校验
-	var s request.SignUp
+	var s model.SignRequest
 	if err := c.ShouldBindJSON(&s); err != nil {
 		//logger.Error("注册请求参数有误")
 		res.ParamError(c)
@@ -37,7 +37,7 @@ func (u *User) SignUpHandler(c *gin.Context) {
 // LoginHandler 登录请求函数
 func (u *User) LoginHandler(c *gin.Context) {
 	//获取参数校验
-	var s request.Login
+	var s model.LoginRequest
 	if err := c.ShouldBindJSON(&s); err != nil {
 		logger.Error("登录请求参数有误")
 		res.ParamError(c)
@@ -51,5 +51,24 @@ func (u *User) LoginHandler(c *gin.Context) {
 	}
 	//TODO:tokenManager
 	//返回响应
-	res.Success(c, nil)
+	res.Success(c, "登录成功")
+}
+
+// ChangePassword 用户密码修改
+func (u *User) ChangePassword(c *gin.Context) {
+	var s model.ChangePasswordRequest
+	//参数校验
+	if err := c.ShouldBindJSON(&s); err != nil {
+		logger.Error("密码修改请求参数有误")
+		res.ParamError(c)
+		return
+	}
+	//业务处理
+	singUser := service.User{}
+	if err := singUser.ChangePassword(&s); err != nil {
+		logger.Error("修改失败,原密码与当前账户不符")
+		return
+	}
+	res.Success(c, "用户密码修改成功")
+
 }

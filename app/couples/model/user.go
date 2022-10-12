@@ -9,7 +9,7 @@ import (
 )
 
 type User struct {
-	ID        int       `json:"id"`
+	ID        int64     `json:"id"`
 	UserName  string    `json:"username"`
 	Password  string    `json:"password"`
 	NickName  string    `json:"nick_name"`  //用户昵称
@@ -20,6 +20,20 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"` //创建时间
 	UpdatedAt time.Time `json:"updated_at"` //更新时间
 	IsDeleted int8      `json:"is_deleted"` //是否删除
+}
+
+type SimpleUser struct {
+	ID        int64  `json:"id"`
+	NickName  string `json:"nick_name"`  //用户昵称
+	HeaderImg string `json:"header_img"` //用户头像
+}
+
+func (u *User) TableName() string {
+	return "users"
+}
+
+func GetEmptyUser() *User {
+	return new(User)
 }
 
 // SignRequest 注册请求参数
@@ -78,4 +92,26 @@ func LoginUser(user *User) (err error) {
 func ChangePassword(mode *ChangePasswordRequest) (err error) {
 	err = global.Gorm.Updates(&User{Password: encryptPassword(mode.NewPassword)}).Error
 	return err
+}
+
+//func (u *User) GetUserById(id int64) (*User, error) {
+//	var user *User
+//	db := global.Gorm.Table(u.TableName()).First(&user, id)
+//	return user, db.Error
+//}
+
+//func (u *User) GetUserById(id int64) (*User, error) {
+//	db := global.Gorm.Table(u.TableName()).First(&u, id)
+//	return u, db.Error
+//}
+
+func (u *User) GetUserById(id int64) error {
+	db := global.Gorm.Table(u.TableName()).First(&u, id)
+	return db.Error
+}
+
+func (u *User) GetSimpleUserById(id int64) (*SimpleUser, error) {
+	var user *SimpleUser
+	db := global.Gorm.Table(u.TableName()).Select("id,header_img,nick_name").First(&user, id)
+	return user, db.Error
 }

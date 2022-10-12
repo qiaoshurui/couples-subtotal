@@ -44,7 +44,7 @@ CREATE TABLE `lovers_relationship`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `couple_id` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '情侣Aid',
   `person_id` bigint(20) UNSIGNED NULL DEFAULT NULL COMMENT '情侣Bid',
-  `memorial_date` bigint(20) NULL DEFAULT NULL COMMENT '纪念日',
+  `memorial_date` date NULL DEFAULT NULL COMMENT '纪念日',
   `created_at` datetime NULL DEFAULT NULL,
   `updated_at` datetime NULL DEFAULT NULL,
   `is_deleted` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否删除',

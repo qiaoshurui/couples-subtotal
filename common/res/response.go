@@ -29,7 +29,13 @@ func Success(c *gin.Context, data interface{}) {
 		Data: data,
 	})
 }
-
+func OkWithMessage(c *gin.Context, msg string, data interface{}) {
+	c.JSON(http.StatusOK, &Response{
+		Code: SUCCESS_CODE,
+		Msg:  msg,
+		Data: data,
+	})
+}
 func ErrorDefault(c *gin.Context) {
 	c.JSON(http.StatusOK, &Response{
 		Code: ERROR_CODE,

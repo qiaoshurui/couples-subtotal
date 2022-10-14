@@ -8,6 +8,6 @@ import (
 func RelationshipRouter(v1 *gin.RouterGroup) {
 	relationship := &apis.Relationship{}
 	{
-		v1.POST("/display", relationship.Display) //情侣关系展示
+		v1.GET("/display/:id", relationship.Display) //情侣关系展示
 	}
 }

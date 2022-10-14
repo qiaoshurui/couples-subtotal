@@ -13,7 +13,7 @@ import (
 )
 
 func TestGetCouplesInfo(t *testing.T) {
-	initialize.InitServer("../../../config/config-dev.yaml")
+	initialize.InitServer("../../../config/config.yaml")
 
 	relationship := service.Relationship{}
 	couplesInfo, err := relationship.GetRelationship(1)

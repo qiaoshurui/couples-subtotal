@@ -6,9 +6,10 @@ import (
 	"github.com/qiaoshurui/couples-subtotal/app/couples/service/dto"
 )
 
+// todo DynamicService
 type Dynamic struct{}
 
-func (d *Dynamic) AddDynamic(p *model.Dynamic) (err error) {
+func (d *Dynamic) AddDynamic(p *dto.AddDynamic) (err error) {
 	dynamic := &model.Dynamic{
 		Content: p.Content,
 		UserId:  p.UserId,

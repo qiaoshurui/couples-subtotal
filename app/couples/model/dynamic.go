@@ -26,6 +26,14 @@ func (d *Dynamic) InsertDynamic(dynamic *Dynamic) (err error) {
 	//插入数据到数据库
 	return global.Gorm.Create(&dynamic).Error
 }
+
+// todo 思考指针用法
+func (d *Dynamic) Insert() (err error) {
+	//插入数据到数据库
+	return global.Gorm.Create(&d).Error
+}
+
+// todo 命名冗余系列   删除一般根据id删除   了解gorm逻辑删除写法
 func (d *Dynamic) DeleteDynamic(dynamic *Dynamic) (err error) {
 	return global.Gorm.Updates(&dynamic).Error
 }

@@ -2,6 +2,7 @@ package dto
 
 import "time"
 
+// todo 全部json统一使用 小驼峰
 type AddDynamic struct {
 	Content string `json:"content"`
 	UserId  int64  `json:"user_id"`
@@ -18,6 +19,10 @@ type UpdateDynamic struct {
 	Status    int8      `json:"status"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+
+// todo 考虑通用的排序方式
+// 考虑 定义通用的分页、排序结构体
+
 type GetDynamicList struct {
 	Page     int    `json:"page"`     // 页码
 	PageSize int    `json:"pageSize"` // 每页大小

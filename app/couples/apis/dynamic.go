@@ -16,7 +16,10 @@ type Dynamic struct {
 	api.Api
 }
 
+const _MyId = 1
+
 // AddDynamic 动态新增
+// todo 太多的结构体转换
 func (d *Dynamic) AddDynamic(c *gin.Context) {
 	var s dto.AddDynamic
 	if err := c.ShouldBindJSON(&s); err != nil {
@@ -24,12 +27,7 @@ func (d *Dynamic) AddDynamic(c *gin.Context) {
 		return
 	}
 	dynamic := service.Dynamic{}
-	err := dynamic.AddDynamic(&model.Dynamic{
-		Content:   s.Content,
-		UserId:    s.UserId,
-		Status:    s.Status,
-		CreatedAt: time.Now(),
-	})
+	err := dynamic.AddDynamic(&s)
 	if err != nil {
 		logger.Error("动态新增失败", zap.Error(err))
 	}
@@ -38,6 +36,7 @@ func (d *Dynamic) AddDynamic(c *gin.Context) {
 }
 
 // DeleteDynamic 动态删除
+// todo 规范
 func (d *Dynamic) DeleteDynamic(c *gin.Context) {
 	var s dto.DeleteDynamic
 	if err := c.ShouldBindJSON(&s); err != nil {
@@ -56,6 +55,7 @@ func (d *Dynamic) DeleteDynamic(c *gin.Context) {
 }
 
 // UpdateDynamic 动态修改
+// todo 结构体优化
 func (d *Dynamic) UpdateDynamic(c *gin.Context) {
 	var s dto.UpdateDynamic
 	if err := c.ShouldBindJSON(&s); err != nil {

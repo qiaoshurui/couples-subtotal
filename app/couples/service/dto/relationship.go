@@ -1,13 +1,13 @@
 package dto
 
 type CouplesInfo struct {
-	UserId        int64  `json:"user_d"`
-	UserNickName  string `json:"user_nick_name"`
-	UserHeaderImg string `json:"user_header_img"`
+	UserId        int64  `json:"userId"`
+	UserNickName  string `json:"userNickName"`
+	UserHeaderImg string `json:"userHeaderImg"`
 
-	LoverId        int64  `json:"lover_id"`
-	LoverNickName  string `json:"lover_nick_name"`
-	LoverHeaderImg string `json:"lover_header_img"`
+	LoverId        int64  `json:"loverId"`
+	LoverNickName  string `json:"loverNickName"`
+	LoverHeaderImg string `json:"loverHeaderImg"`
 
-	MemorialDay int `json:"memorial_day"` //纪念日已过去天数
+	MemorialDay int `json:"memorialDay"` //纪念日已过去天数
 }

@@ -7,12 +7,12 @@ import (
 
 type Relationship struct {
 	ID           int64     `json:"id"`
-	CoupleId     int64     `json:"couple_id"`     //情侣Aid
-	PersonId     int64     `json:"person_id"`     //情侣Bid
-	MemorialDate time.Time `json:"memorial_date"` //纪念日
-	CreatedAt    time.Time `json:"created_at"`    //创建时间
-	UpdatedAt    time.Time `json:"updated_at"`    //更新时间
-	IsDeleted    int8      `json:"is_deleted"`    //是否删除
+	CoupleId     int64     `json:"coupleId"`     //情侣Aid
+	PersonId     int64     `json:"personId"`     //情侣Bid
+	MemorialDate time.Time `json:"memorialDate"` //纪念日
+	CreatedAt    time.Time `json:"createdAt"`    //创建时间
+	UpdatedAt    time.Time `json:"updatedAt"`    //更新时间
+	IsDeleted    int8      `json:"isDeleted"`    //是否删除
 }
 
 func (r *Relationship) TableName() string {

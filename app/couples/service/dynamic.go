@@ -4,42 +4,54 @@ import (
 	"github.com/pkg/errors"
 	"github.com/qiaoshurui/couples-subtotal/app/couples/model"
 	"github.com/qiaoshurui/couples-subtotal/app/couples/service/dto"
+	"time"
 )
 
-// todo DynamicService
-type Dynamic struct{}
+type DynamicService struct{}
 
-func (d *Dynamic) AddDynamic(p *dto.AddDynamic) (err error) {
+const _MyId = 1
+
+func (d *DynamicService) AddDynamic(data *dto.AddDynamic) (err error) {
 	dynamic := &model.Dynamic{
-		Content: p.Content,
-		UserId:  p.UserId,
-		Status:  p.Status,
+		Content:   data.Content,
+		UserId:    _MyId,
+		Status:    data.Status,
+		CreatedAt: time.Now(),
 	}
 	emptyDynamic := model.GetEmptyDynamic()
 	err = emptyDynamic.InsertDynamic(dynamic)
 	if err != nil {
-		return errors.Wrapf(err, "新增动态失败 Content：%v", p.Content)
-	}
-	return nil
-}
-func (d *Dynamic) DeleteDynamic(data *model.Dynamic) (err error) {
-	emptyDynamic := model.GetEmptyDynamic()
-	err = emptyDynamic.DeleteDynamic(data)
-	if err != nil {
-		return errors.Wrap(err, "删除动态失败")
-	}
-	return nil
-}
-func (d *Dynamic) UpdateDynamic(data *model.Dynamic) (err error) {
-	emptyDynamic := model.GetEmptyDynamic()
-	err = emptyDynamic.UpdateDynamic(data)
-	if err != nil {
-		return errors.Wrap(err, "更新动态失败")
+		return errors.Wrapf(err, "新增动态失败 Content：%v", data.Content)
 	}
 	return nil
 }
 
-func (d *Dynamic) GetDynamicList(data *dto.GetDynamicList) (dynamicList []*dto.DynamicListInfo, err error) {
+func (d *DynamicService) DeleteDynamic(id int64) (err error) {
+	dynamic := &model.Dynamic{ID: id}
+	emptyDynamic := model.GetEmptyDynamic()
+	err = emptyDynamic.Delete(dynamic)
+	if err != nil {
+		return errors.Wrapf(err, "删除动态失败 ID:%v", id)
+	}
+	return nil
+}
+
+func (d *DynamicService) UpdateDynamic(data *dto.UpdateDynamic) (err error) {
+	dynamic := &model.Dynamic{
+		ID:        data.Id,
+		Content:   data.Content,
+		Status:    data.Status,
+		UpdatedAt: time.Now(),
+	}
+	emptyDynamic := model.GetEmptyDynamic()
+	err = emptyDynamic.UpdateDynamic(dynamic)
+	if err != nil {
+		return errors.Wrapf(err, "更新动态失败 ID:%v", data.Id)
+	}
+	return nil
+}
+
+func (d *DynamicService) GetDynamicList(data *dto.GetDynamicList) (dynamicList []*dto.DynamicListInfo, err error) {
 	emptyDynamic := model.GetEmptyDynamic()
 	dynamics, err := emptyDynamic.GetDynamicList(data)
 	if err != nil {
@@ -57,4 +69,12 @@ func (d *Dynamic) GetDynamicList(data *dto.GetDynamicList) (dynamicList []*dto.D
 		dynamicList = append(dynamicList, dynamicDetail)
 	}
 	return
+}
+func (d *DynamicService) GetDynamicDetail(id int64) (*dto.SimpleDynamicDetail, error) {
+	emptyDynamic := model.GetEmptyDynamic()
+	dynamicDetail, err := emptyDynamic.GetDynamicDetail(id)
+	if err != nil {
+		return nil, errors.Wrapf(err, "查询动态详情失败 ID: %v", id)
+	}
+	return dynamicDetail, nil
 }

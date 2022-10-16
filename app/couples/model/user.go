@@ -10,22 +10,22 @@ import (
 
 type User struct {
 	ID        int64     `json:"id"`
-	UserName  string    `json:"username"`
+	UserName  string    `json:"userName"`
 	Password  string    `json:"password"`
-	NickName  string    `json:"nick_name"`  //用户昵称
-	Birthday  time.Time `json:"birthday"`   //出生日期
-	Email     string    `json:"email"`      //用户邮箱
-	Phone     string    `json:"phone"`      //用户手机号
-	HeaderImg string    `json:"header_img"` //用户头像
-	CreatedAt time.Time `json:"created_at"` //创建时间
-	UpdatedAt time.Time `json:"updated_at"` //更新时间
-	IsDeleted int8      `json:"is_deleted"` //是否删除
+	NickName  string    `json:"nickName"`  //用户昵称
+	Birthday  time.Time `json:"birthday"`  //出生日期
+	Email     string    `json:"email"`     //用户邮箱
+	Phone     string    `json:"phone"`     //用户手机号
+	HeaderImg string    `json:"headerImg"` //用户头像
+	CreatedAt time.Time `json:"createdAt"` //创建时间
+	UpdatedAt time.Time `json:"updatedAt"` //更新时间
+	IsDeleted int8      `json:"isDeleted"` //是否删除
 }
 
 type SimpleUser struct {
 	ID        int64  `json:"id"`
-	NickName  string `json:"nick_name"`  //用户昵称
-	HeaderImg string `json:"header_img"` //用户头像
+	NickName  string `json:"nickName"`  //用户昵称
+	HeaderImg string `json:"headerImg"` //用户头像
 }
 
 func (u *User) TableName() string {

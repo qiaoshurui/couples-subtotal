@@ -11,3 +11,7 @@ type CouplesInfo struct {
 
 	MemorialDay int `json:"memorialDay"` //纪念日已过去天数
 }
+type RelationshipBinding struct {
+	RegistrationCode string `json:"registrationCode"`
+	UserId           int64  `json:"userId"`
+}

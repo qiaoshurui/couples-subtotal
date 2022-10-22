@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/pkg/errors"
 	model "github.com/qiaoshurui/couples-subtotal/app/couples/model"
+	"github.com/qiaoshurui/couples-subtotal/common/utils"
 )
 
 type User struct{}
@@ -14,11 +15,16 @@ func (u *User) SignUp(p *model.SignRequest) (err error) {
 		return errors.Wrapf(err, "用户名已存在username:%s", p.UserName)
 	}
 	//保存进数据库
+	registrationCode := utils.RegCodeCreat()
+	encryptedRegistration := utils.PasswordEncryption(registrationCode)
+
 	user := &model.User{
-		UserName: p.Phone,
-		Password: p.Password,
-		Email:    p.Email,
-		Phone:    p.Phone,
+		UserName:              p.Phone,
+		Password:              p.Password,
+		Email:                 p.Email,
+		Phone:                 p.Phone,
+		RegistrationCode:      registrationCode,
+		EncryptedRegistration: encryptedRegistration,
 	}
 	if err = model.InsertUser(user); err != nil {
 		return errors.Wrap(err, "注册用户落库失败")

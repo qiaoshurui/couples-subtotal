@@ -14,7 +14,13 @@ type User struct {
 	api.Api
 }
 
-// SignUpHandler 注册请求函数
+// SignUpHandler
+// @Tags User
+// @Summary 注册请求函数
+// @Produce  application/json
+// @Param data body model.SignRequest true "用户名、密码、邮箱、手机号"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"注册成功"}"
+// @Router /api/v1/sign [post]
 func (u *User) SignUpHandler(c *gin.Context) {
 	//获取参数校验
 	var s model.SignRequest
@@ -34,7 +40,13 @@ func (u *User) SignUpHandler(c *gin.Context) {
 	res.Success(c, "用户注册成功")
 }
 
-// LoginHandler 登录请求函数
+// LoginHandler
+// @Tags User
+// @Summary 登录请求函数
+// @Produce  application/json
+// @Param data body model.LoginRequest true "用户名, 密码"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"登陆成功"}"
+// @Router /api/v1/login  [post]
 func (u *User) LoginHandler(c *gin.Context) {
 	//获取参数校验
 	var s model.LoginRequest
@@ -54,7 +66,14 @@ func (u *User) LoginHandler(c *gin.Context) {
 	res.Success(c, "登录成功")
 }
 
-// ChangePassword 用户密码修改
+// ChangePassword
+// @Tags User
+// @Summary 用户密码修改
+// @Security ApiKeyAuth
+// @Produce  application/json
+// @Param data body model.ChangePasswordRequest true "用户名, 原密码, 新密码"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"修改成功"}"
+// @Router /api/v1/changePassword [post]
 func (u *User) ChangePassword(c *gin.Context) {
 	var s model.ChangePasswordRequest
 	//参数校验
@@ -70,5 +89,4 @@ func (u *User) ChangePassword(c *gin.Context) {
 		return
 	}
 	res.Success(c, "用户密码修改成功")
-
 }

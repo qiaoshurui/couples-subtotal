@@ -1,0 +1,304 @@
+definitions:
+  dto.AddDynamic:
+    properties:
+      content:
+        type: string
+      status:
+        type: integer
+      userId:
+        type: integer
+    type: object
+  dto.CouplesInfo:
+    properties:
+      loverHeaderImg:
+        type: string
+      loverId:
+        type: integer
+      loverNickName:
+        type: string
+      memorialDay:
+        description: 纪念日已过去天数
+        type: integer
+      userHeaderImg:
+        type: string
+      userId:
+        type: integer
+      userNickName:
+        type: string
+    type: object
+  dto.DynamicListInfo:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      userId:
+        description: 动态发布者id
+        type: integer
+      userNickName:
+        description: 动态发布者的昵称
+        type: string
+    type: object
+  dto.GetDynamicList:
+    properties:
+      content:
+        type: string
+      page:
+        description: 页码
+        type: integer
+      pageSize:
+        description: 每页大小
+        type: integer
+    type: object
+  dto.RelationshipBinding:
+    properties:
+      registrationCode:
+        type: string
+      userId:
+        type: integer
+    type: object
+  dto.UpdateDynamic:
+    properties:
+      content:
+        type: string
+      id:
+        type: integer
+      status:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  model.ChangePasswordRequest:
+    properties:
+      newPassword:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.SignRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/changePassword:
+    post:
+      parameters:
+      - description: 用户名, 原密码, 新密码
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"修改成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 用户密码修改
+      tags:
+      - User
+  /api/v1/couple-detail:
+    get:
+      parameters:
+      - description: ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 情侣关系展示页面获取成功
+          schema:
+            $ref: '#/definitions/dto.CouplesInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 情侣关系展示页面
+      tags:
+      - Relationship
+  /api/v1/couple-detail/:id:
+    get:
+      parameters:
+      - description: ID
+        in: query
+        name: '"id"'
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 情侣关系展示页面获取成功
+          schema:
+            $ref: '#/definitions/dto.CouplesInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 情侣关系展示页面
+      tags:
+      - Relationship
+  /api/v1/dynamic:
+    delete:
+      parameters:
+      - description: ID
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"动态删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 动态删除
+      tags:
+      - Dynamic
+    post:
+      parameters:
+      - description: 内容、用户id、动态状态
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddDynamic'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"动态新增成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 动态新增
+      tags:
+      - Dynamic
+    put:
+      parameters:
+      - description: id,内容,状态,更新时间
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateDynamic'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"动态修改成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 动态修改
+      tags:
+      - Dynamic
+  /api/v1/dynamic/list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页码, 每页大小,选填：动态内容
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GetDynamicList'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 分页获取动态列表,返回包括列表,总数
+          schema:
+            $ref: '#/definitions/dto.DynamicListInfo'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取动态列表
+      tags:
+      - Dynamic
+  /api/v1/login:
+    post:
+      parameters:
+      - description: 用户名, 密码
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"登陆成功"}'
+          schema:
+            type: string
+      summary: 登录请求函数
+      tags:
+      - User
+  /api/v1/relationship:
+    post:
+      parameters:
+      - description: 注册码，用户id
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RelationshipBinding'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"情侣关系绑定成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 情侣关系绑定
+      tags:
+      - Relationship
+  /api/v1/sign:
+    post:
+      parameters:
+      - description: 用户名、密码、邮箱、手机号
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.SignRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"注册成功"}'
+          schema:
+            type: string
+      summary: 注册请求函数
+      tags:
+      - User
+swagger: "2.0"

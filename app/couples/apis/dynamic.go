@@ -15,7 +15,14 @@ type Dynamic struct {
 	api.Api
 }
 
-// AddDynamic 动态新增
+// AddDynamic
+// @Tags Dynamic
+// @Summary 动态新增
+// @Security ApiKeyAuth
+// @Produce application/json
+// @Param data body dto.AddDynamic true "内容、用户id、动态状态"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"动态新增成功"}"
+// @Router /api/v1/dynamic  [post]
 func (d *Dynamic) AddDynamic(c *gin.Context) {
 	var s dto.AddDynamic
 	if err := c.ShouldBindJSON(&s); err != nil {
@@ -31,7 +38,14 @@ func (d *Dynamic) AddDynamic(c *gin.Context) {
 
 }
 
-// DeleteDynamic 动态删除
+// DeleteDynamic
+// @Tags Dynamic
+// @Summary 动态删除
+// @Security ApiKeyAuth
+// @Produce application/json
+// @Param id query int64 true "ID"
+// @Success 200 {string} json "{"success":true,"data":{},"msg":"动态删除成功"}"
+// @Router /api/v1/dynamic [delete]
 func (d *Dynamic) DeleteDynamic(c *gin.Context) {
 	dynamicId := c.Query("id")
 	id, err := strconv.ParseInt(dynamicId, 10, 64)
@@ -48,6 +62,13 @@ func (d *Dynamic) DeleteDynamic(c *gin.Context) {
 }
 
 // UpdateDynamic 动态修改
+// @Tags Dynamic
+// @Summary 动态修改
+// @Security ApiKeyAuth
+// @Produce application/json
+// @Param data body dto.UpdateDynamic true "id,内容,状态,更新时间"
+// @Success 200 {string} json "{"success":true,"data":{},"msg":"动态修改成功"}"
+// @Router /api/v1/dynamic [put]
 func (d *Dynamic) UpdateDynamic(c *gin.Context) {
 	var s dto.UpdateDynamic
 	if err := c.ShouldBindJSON(&s); err != nil {
@@ -62,6 +83,14 @@ func (d *Dynamic) UpdateDynamic(c *gin.Context) {
 }
 
 // GetDynamicList 查看动态列表
+// @Tags Dynamic
+// @Summary 获取动态列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data body dto.GetDynamicList true "页码, 每页大小,选填：动态内容"
+// @Success 200 {object} dto.DynamicListInfo "分页获取动态列表,返回包括列表,总数"
+// @Router /api/v1/dynamic/list [get]
 func (d *Dynamic) GetDynamicList(c *gin.Context) {
 	var s dto.GetDynamicList
 	if err := c.ShouldBindJSON(&s); err != nil {

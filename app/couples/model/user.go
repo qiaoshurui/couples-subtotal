@@ -9,17 +9,19 @@ import (
 )
 
 type User struct {
-	ID        int64     `json:"id"`
-	UserName  string    `json:"userName"`
-	Password  string    `json:"password"`
-	NickName  string    `json:"nickName"`  //用户昵称
-	Birthday  time.Time `json:"birthday"`  //出生日期
-	Email     string    `json:"email"`     //用户邮箱
-	Phone     string    `json:"phone"`     //用户手机号
-	HeaderImg string    `json:"headerImg"` //用户头像
-	CreatedAt time.Time `json:"createdAt"` //创建时间
-	UpdatedAt time.Time `json:"updatedAt"` //更新时间
-	IsDeleted int8      `json:"isDeleted"` //是否删除
+	ID                    int64     `json:"id"`
+	UserName              string    `json:"userName"`
+	Password              string    `json:"password"`
+	NickName              string    `json:"nickName"`              //用户昵称
+	Birthday              time.Time `json:"birthday"`              //出生日期
+	Email                 string    `json:"email"`                 //用户邮箱
+	Phone                 string    `json:"phone"`                 //用户手机号
+	RegistrationCode      string    `json:"registrationCode"`      //注册码
+	EncryptedRegistration string    `json:"encryptedRegistration"` //加密的注册码
+	HeaderImg             string    `json:"headerImg"`             //用户头像
+	CreatedAt             time.Time `json:"createdAt"`             //创建时间
+	UpdatedAt             time.Time `json:"updatedAt"`             //更新时间
+	IsDeleted             int8      `json:"isDeleted"`             //是否删除
 }
 
 type SimpleUser struct {
@@ -114,4 +116,8 @@ func (u *User) GetSimpleUserById(id int64) (*SimpleUser, error) {
 	var user *SimpleUser
 	db := global.Gorm.Table(u.TableName()).Select("id,header_img,nick_name").First(&user, id)
 	return user, db.Error
+}
+func (u *User) GetUserId(code string) error {
+	db := global.Gorm.Table(u.TableName()).Select("id").Where("registration_code=?", code)
+	return db.Error
 }

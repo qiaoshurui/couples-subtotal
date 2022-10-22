@@ -4,6 +4,7 @@ server:
   http:
     host: 127.0.0.1
     port: 9991
+  swagger-enable: true
 db:
   dsn: root:20190624319xq@tcp(127.0.0.1:3306)/couples_subtotal?charset=utf8mb4&parseTime=true&loc=Local
   maxOpenConns: 200

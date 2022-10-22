@@ -13,7 +13,10 @@ import (
 	couples "github.com/qiaoshurui/couples-subtotal/app/couples/router"
 	"github.com/qiaoshurui/couples-subtotal/common/global"
 	"github.com/qiaoshurui/couples-subtotal/common/initialize"
+	_ "github.com/qiaoshurui/couples-subtotal/docs"
 	"github.com/spf13/cobra"
+	"github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	"net/http"
 )
@@ -56,6 +59,7 @@ func initRouter() error {
 
 	examples.InitHelloRouter(global.Router)
 	couples.InitCoupleRouter(global.Router)
+	global.Router.GET("/api/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	err := global.Router.Run(fmt.Sprintf("%s:%d", global.Config.Server.Http.Host, global.Config.Server.Http.Port))
 	if err != nil {

@@ -38,3 +38,20 @@ func (r *Relationship) GetRelationship(userId int64) (*dto.CouplesInfo, error) {
 
 	return couplesInfo, nil
 }
+func (r *Relationship) RelationBinding(data *dto.RelationshipBinding) (err error) {
+	//通过注册码找到邀请人id
+	user := model.GetEmptyUser()
+	err = user.GetUserId(data.RegistrationCode)
+	//添加数据到关系表
+	relationship := &model.Relationship{
+		CoupleId:  _MyId,
+		PersonId:  user.ID,
+		CreatedAt: time.Now(),
+	}
+	emptyRelationship := model.GetEmptyRelationship()
+	err = emptyRelationship.InsertRelationship(relationship)
+	if err != nil {
+		return errors.Wrapf(err, "情侣关系绑定失败 coupleId：%v", data.UserId)
+	}
+	return nil
+}

@@ -8,14 +8,13 @@ import (
 )
 
 type Dynamic struct {
-	ID        int64     `json:"id"`
-	Content   string    `json:"content"`   //动态内容
-	UserId    int64     `json:"userId"`    //动态发布者id
-	Status    int8      `json:"status"`    //动态状态（0 双方可见;1 仅自己可见）
-	CreatedAt time.Time `json:"createdAt"` //创建时间
-	UpdatedAt time.Time `json:"updatedAt"` //更新时间
-	DeletedAt time.Time `json:"deletedAt"` //删除时间
-	//IsDeleted int8      `json:"is_deleted"` //是否删除
+	ID        int64                 `json:"id"`
+	Content   string                `json:"content"`                                  //动态内容
+	UserId    int64                 `json:"userId"`                                   //动态发布者id
+	Status    int8                  `json:"status"`                                   //动态状态（0 双方可见;1 仅自己可见）
+	CreatedAt time.Time             `json:"createdAt"`                                //创建时间
+	UpdatedAt time.Time             `json:"updatedAt"`                                //更新时间
+	DeletedAt time.Time             `json:"deletedAt"`                                //删除时间
 	IsDeleted soft_delete.DeletedAt `gorm:"softDelete:flag,DeletedAtField:DeletedAt"` // 使用 `1` `0` 标识是否删除
 }
 

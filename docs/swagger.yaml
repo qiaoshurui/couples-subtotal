@@ -262,6 +262,25 @@ paths:
       tags:
       - User
   /api/v1/relationship:
+    delete:
+      parameters:
+      - description: coupleID
+        in: query
+        name: coupleId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"情侣关系绑定成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 情侣关系解绑
+      tags:
+      - Relationship
     post:
       parameters:
       - description: 注册码，用户id

@@ -32,5 +32,9 @@ func (r *Relationship) GetByCoupleAId(coupleAId int64) error {
 func (r *Relationship) InsertRelationship(relationship *Relationship) error {
 	db := global.Gorm.Create(&relationship)
 	return db.Error
+}
+func (r *Relationship) Delete(relationship *Relationship) error {
+	db := global.Gorm.Where("couple_id=? OR person_id=?", relationship.CoupleId).Delete(&relationship)
+	return db.Error
 
 }

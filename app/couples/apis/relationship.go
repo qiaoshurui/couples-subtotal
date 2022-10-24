@@ -89,3 +89,26 @@ func (r Relationship) CoupleInvitation(c *gin.Context) {
 	}
 	res.Success(c, "情侣关系绑定成功")
 }
+
+// CoupleUnbound
+// @Tags Relationship
+// @Summary 情侣关系解绑
+// @Security ApiKeyAuth
+// @Produce  application/json
+// @Param coupleId query int64 true "coupleID"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"情侣关系绑定成功"}"
+// @Router /api/v1/relationship [delete]
+func (r *Relationship) CoupleUnbound(c *gin.Context) {
+	coupleId := c.Query("coupleId")
+	parseInt, err := strconv.ParseInt(coupleId, 10, 64)
+	if err != nil {
+		logger.Error("情侣关系解绑的请求参数有误", zap.Error(err))
+		return
+	}
+	relationship := service.Relationship{}
+	err = relationship.RelationUnbind(parseInt)
+	if err != nil {
+		logger.Error("情侣关系解绑失败", zap.Error(err))
+	}
+	res.Success(c, "情侣关系解绑成功")
+}

@@ -7,6 +7,7 @@ package global
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"github.com/tencentyun/cos-go-sdk-v5"
 	"gorm.io/gorm"
 )
 
@@ -15,6 +16,7 @@ const VERSION = "v0.0.1"
 var (
 	Gorm   *gorm.DB
 	Viper  *viper.Viper
+	Client *cos.Client
 	Config ConfigYaml
 	Router *gin.Engine
 )
@@ -40,5 +42,12 @@ type ConfigYaml struct {
 			Server string
 			Gorm   string
 		}
+	}
+	TencentCloud struct {
+		BucketName string
+		Region     string
+		AppId      string
+		SecretId   string
+		SecretKey  string
 	}
 }

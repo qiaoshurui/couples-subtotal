@@ -15,10 +15,9 @@ type DeleteDynamic struct {
 }
 
 type UpdateDynamic struct {
-	Id        int64     `json:"id"`
-	Content   string    `json:"content"`
-	Status    int8      `json:"status"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	Id      int64  `json:"id"`
+	Content string `json:"content"`
+	Status  int8   `json:"status"`
 }
 
 // todo 考虑通用的排序方式

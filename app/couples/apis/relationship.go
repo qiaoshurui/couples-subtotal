@@ -68,12 +68,12 @@ func (r Relationship) CoupleDetailDisplay2(c *gin.Context) {
 
 }
 
-// CoupleInvitation 情侣关系绑定
+// CoupleInvitation
 // @Tags Relationship
-// @Summary 情侣关系绑定
+// @Summary 情侣关系绑定（通过链接进行关系绑定）
 // @Security ApiKeyAuth
 // @Produce  application/json
-// @Param data body dto.RelationshipBinding true "注册码，用户id"
+// @Param data body dto.RelationshipBinding true "加密后的注册码，用户id"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"情侣关系绑定成功"}"
 // @Router /api/v1/relationship [post]
 func (r Relationship) CoupleInvitation(c *gin.Context) {
@@ -90,13 +90,35 @@ func (r Relationship) CoupleInvitation(c *gin.Context) {
 	res.Success(c, "情侣关系绑定成功")
 }
 
+// CoupleInvitation2
+// @Tags Relationship
+// @Summary 情侣关系绑定（通过交换注册码进行关系绑定）
+// @Security ApiKeyAuth
+// @Produce  application/json
+// @Param data body dto.RelationshipBinding true "未加密注册码，用户id"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"情侣关系绑定成功"}"
+// @Router /api/v1/relationship2 [post]
+func (r Relationship) CoupleInvitation2(c *gin.Context) {
+	var bindingParam dto.RelationshipBinding2
+	if err := c.ShouldBindJSON(&bindingParam); err != nil {
+		logger.Error("关系绑定请求参数有误", zap.Error(err))
+		return
+	}
+	relationship := service.Relationship{}
+	err := relationship.RelationBinding2(&bindingParam)
+	if err != nil {
+		logger.Error("情侣关系绑定失败", zap.Error(err))
+	}
+	res.Success(c, "情侣关系绑定成功")
+}
+
 // CoupleUnbound
 // @Tags Relationship
 // @Summary 情侣关系解绑
 // @Security ApiKeyAuth
 // @Produce  application/json
 // @Param coupleId query int64 true "coupleID"
-// @Success 200 {string} string "{"success":true,"data":{},"msg":"情侣关系绑定成功"}"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"情侣关系解绑成功"}"
 // @Router /api/v1/relationship [delete]
 func (r *Relationship) CoupleUnbound(c *gin.Context) {
 	coupleId := c.Query("coupleId")

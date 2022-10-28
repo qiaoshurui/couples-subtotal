@@ -15,6 +15,7 @@ func InitServer(configDir string) {
 	once.Do(func() {
 		InitConfig(configDir)
 		InitGorm()
+		InitTencentCloud()
 		logger.InitLog()
 		InitGin()
 	})

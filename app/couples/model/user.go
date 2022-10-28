@@ -118,6 +118,6 @@ func (u *User) GetSimpleUserById(id int64) (*SimpleUser, error) {
 	return user, db.Error
 }
 func (u *User) GetUserId(code string) error {
-	db := global.Gorm.Table(u.TableName()).Select("id").Where("registration_code=?", code)
+	db := global.Gorm.Table(u.TableName()).First(&u, "registration_code=?", code)
 	return db.Error
 }

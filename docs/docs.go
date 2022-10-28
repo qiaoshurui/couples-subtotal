@@ -118,6 +118,37 @@ const docTemplate = `{
             }
         },
         "/api/v1/dynamic": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Dynamic"
+                ],
+                "summary": "查看动态详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "获取动态详情成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "put": {
                 "security": [
                     {
@@ -235,13 +266,21 @@ const docTemplate = `{
                 "summary": "获取动态列表",
                 "parameters": [
                     {
-                        "description": "页码, 每页大小,选填：动态内容",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.GetDynamicList"
-                        }
+                        "type": "string",
+                        "name": "content",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -284,6 +323,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/photo-album": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PhotoAlbum"
+                ],
+                "summary": "相册新增",
+                "parameters": [
+                    {
+                        "description": "相册名称，相册类型",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AddPhotoAlbum"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"相册创建成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/relationship": {
             "post": {
                 "security": [
@@ -297,10 +371,10 @@ const docTemplate = `{
                 "tags": [
                     "Relationship"
                 ],
-                "summary": "情侣关系绑定",
+                "summary": "情侣关系绑定（通过链接进行关系绑定）",
                 "parameters": [
                     {
-                        "description": "注册码，用户id",
+                        "description": "加密后的注册码，用户id",
                         "name": "data",
                         "in": "body",
                         "required": true,
@@ -338,6 +412,41 @@ const docTemplate = `{
                         "name": "coupleId",
                         "in": "query",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"情侣关系解绑成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/relationship2": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Relationship"
+                ],
+                "summary": "情侣关系绑定（通过交换注册码进行关系绑定）",
+                "parameters": [
+                    {
+                        "description": "未加密注册码，用户id",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RelationshipBinding"
+                        }
                     }
                 ],
                 "responses": {
@@ -396,6 +505,18 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.AddPhotoAlbum": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "description": "(0 情侣相册；1 个人相册)",
+                    "type": "string"
+                }
+            }
+        },
         "dto.CouplesInfo": {
             "type": "object",
             "properties": {
@@ -442,26 +563,15 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.GetDynamicList": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "page": {
-                    "description": "页码",
-                    "type": "integer"
-                },
-                "pageSize": {
-                    "description": "每页大小",
-                    "type": "integer"
-                }
-            }
-        },
         "dto.RelationshipBinding": {
             "type": "object",
             "properties": {
-                "registrationCode": {
+                "memorialDate": {
+                    "description": "纪念日",
+                    "type": "string"
+                },
+                "registrationCodeEncrypt": {
+                    "description": "加密后的注册码",
                     "type": "string"
                 },
                 "userId": {
@@ -480,9 +590,6 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "integer"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         },

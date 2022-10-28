@@ -65,6 +65,5 @@ func initRouter() error {
 	if err != nil {
 		return errors.Wrap(err, "Failed to start http server")
 	}
-
 	return nil
 }

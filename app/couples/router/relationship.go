@@ -10,7 +10,8 @@ func RelationshipRouter(v1 *gin.RouterGroup) {
 	{
 		v1.GET("/couple-detail/:id", relationship.CoupleDetailDisplay) //情侣关系展示1
 		v1.GET("/couple-detail", relationship.CoupleDetailDisplay2)    //情侣关系展示2
-		v1.POST("relationship", relationship.CoupleInvitation)         //情侣关系绑定
+		v1.POST("relationship", relationship.CoupleInvitation)         //情侣关系绑定(通过发送链接进行关系绑定)
+		v1.POST("relationship2", relationship.CoupleInvitation2)       //情侣关系绑定(通过交换注册码进行关系绑定)
 		v1.DELETE("relationship", relationship.CoupleUnbound)          //情侣关系解绑
 	}
 }

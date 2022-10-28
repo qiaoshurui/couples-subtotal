@@ -42,11 +42,20 @@ func (d *Dynamic) UpdateDynamic(dynamic *Dynamic) (err error) {
 }
 func (d *Dynamic) GetDynamicList(data *dto.GetDynamicList) ([]*Dynamic, error) {
 	limit := data.PageSize
-	offset := data.PageSize * (data.PageSize - 1)
+	offset := data.PageSize * (data.Page - 1)
 	var dynamicList []*Dynamic
-	db := global.Gorm.Table(d.TableName()).Where("content like %?% AND is_deleted=0", data.Content).Limit(limit).Offset(offset).Find(&dynamicList)
+	db := global.Gorm.Table(d.TableName()).Where("content like ? ", "%"+data.Content+"%").Limit(limit).Offset(offset).Find(&dynamicList)
 	return dynamicList, db.Error
 }
+
+//func (d *Dynamic) GetDynamicList2(page, size int, content string) ([]*Dynamic, error) {
+//	limit := size
+//	offset := size * (page - 1)
+//	var dynamicList []*Dynamic
+//	db := global.Gorm.Table(d.TableName()).Where("content like ? ", "%"+content+"%").Limit(limit).Offset(offset).Find(&dynamicList)
+//	return dynamicList, db.Error
+//}
+
 func (d *Dynamic) GetDynamicDetail(id int64) (*dto.SimpleDynamicDetail, error) {
 	var dynamicDetail *dto.SimpleDynamicDetail
 	db := global.Gorm.Table(d.TableName()).Select("id,content,user_id,created_at").First(&dynamicDetail, id)

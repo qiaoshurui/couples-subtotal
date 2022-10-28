@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/pkg/errors"
 	"github.com/qiaoshurui/couples-subtotal/app/couples/model"
 	"github.com/qiaoshurui/couples-subtotal/app/couples/service/dto"
@@ -35,15 +36,34 @@ func (r *Relationship) GetRelationship(userId int64) (*dto.CouplesInfo, error) {
 		LoverHeaderImg: lover.HeaderImg,
 		MemorialDay:    memorialDay,
 	}
-
 	return couplesInfo, nil
 }
 func (r *Relationship) RelationBinding(data *dto.RelationshipBinding) (err error) {
 	//注册码解码
-	decryptionCode := utils.PasswordDecryption(data.RegistrationCode)
+	decryptionCode := utils.PasswordDecryption(data.RegistrationCodeEncrypt)
+	fmt.Printf(decryptionCode)
 	//通过注册码找到邀请人id
 	user := model.GetEmptyUser()
+	//fmt.Printf(user.ID)
 	err = user.GetUserId(decryptionCode)
+	//添加数据到关系表
+	relationship := &model.Relationship{
+		CoupleId:     _MyId,
+		PersonId:     user.ID,
+		MemorialDate: data.MemorialDate,
+		CreatedAt:    time.Now(),
+	}
+	emptyRelationship := model.GetEmptyRelationship()
+	err = emptyRelationship.InsertRelationship(relationship)
+	if err != nil {
+		return errors.Wrapf(err, "情侣关系绑定失败 coupleId：%v", data.UserId)
+	}
+	return nil
+}
+func (r *Relationship) RelationBinding2(data *dto.RelationshipBinding2) (err error) {
+	//通过注册码找到邀请人id
+	user := model.GetEmptyUser()
+	err = user.GetUserId(data.RegistrationCodeDecryption)
 	//添加数据到关系表
 	relationship := &model.Relationship{
 		CoupleId:  _MyId,
@@ -57,6 +77,7 @@ func (r *Relationship) RelationBinding(data *dto.RelationshipBinding) (err error
 	}
 	return nil
 }
+
 func (r *Relationship) RelationUnbind(coupleId int64) error {
 	relationship := &model.Relationship{CoupleId: coupleId}
 	emptyRelationship := model.GetEmptyRelationship()

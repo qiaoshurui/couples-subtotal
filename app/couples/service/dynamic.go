@@ -60,6 +60,9 @@ func (d *DynamicService) GetDynamicList(data *dto.GetDynamicList) (dynamicList [
 	for _, dynamic := range dynamics {
 		user := model.GetEmptyUser()
 		err = user.GetUserById(dynamic.UserId)
+		if err != nil {
+			return nil, errors.Wrapf(err, "查询用户信息失败 userId：%v", user.ID)
+		}
 		dynamicDetail := &dto.DynamicListInfo{
 			Id:           dynamic.ID,
 			Content:      dynamic.Content,

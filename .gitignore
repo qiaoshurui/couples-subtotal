@@ -64,4 +64,5 @@ go.sum
 couples-cli
 couples-cli.exe
 config/config-dev.yaml
+config/config-tencent.yaml
 

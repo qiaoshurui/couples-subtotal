@@ -14,3 +14,4 @@ log:
     server: debug
     # 关闭gorm日志使用 silent （silent、error、info、warn）
     gorm: info
+

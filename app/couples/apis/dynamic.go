@@ -82,31 +82,41 @@ func (d *Dynamic) UpdateDynamic(c *gin.Context) {
 	res.OkWithMessage(c, "动态修改成功", nil)
 }
 
-// GetDynamicList 查看动态列表
+// GetDynamicList
 // @Tags Dynamic
 // @Summary 获取动态列表
 // @Security ApiKeyAuth
 // @accept application/json
 // @Produce application/json
-// @Param data body dto.GetDynamicList true "页码, 每页大小,选填：动态内容"
+// @Param data query dto.GetDynamicList true "页码, 每页大小,选填：动态内容"
 // @Success 200 {object} dto.DynamicListInfo "分页获取动态列表,返回包括列表,总数"
 // @Router /api/v1/dynamic/list [get]
 func (d *Dynamic) GetDynamicList(c *gin.Context) {
-	var s dto.GetDynamicList
-	if err := c.ShouldBindJSON(&s); err != nil {
-		logger.Error("动态查找列表请求参数有误", zap.Error(err))
+	page, size := getPageInfo(c)
+	content := c.Query("content")
+	data := &dto.GetDynamicList{
+		Page:     page,
+		PageSize: size,
+		Content:  content,
 	}
 	dynamic := service.DynamicService{}
-	dynamicList, err := dynamic.GetDynamicList(&s)
+	dynamicList, err := dynamic.GetDynamicList(data)
 	if err != nil {
 		logger.Error("动态查找失败", zap.Error(err))
 	}
 	res.OkWithMessage(c, "动态查找列表展示成功", dynamicList)
 }
 
-// GetDynamicDetail 查看动态详情
+// GetDynamicDetail
+// @Tags Dynamic
+// @Summary 查看动态详情
+// @Security ApiKeyAuth
+// @Produce application/json
+// @Param id query int64 true "ID"
+// @Success 200 {string} dto.SimpleDynamicDetail "获取动态详情成功"
+// @Router /api/v1/dynamic [get]
 func (d *Dynamic) GetDynamicDetail(c *gin.Context) {
-	dynamicId := c.Param("id")
+	dynamicId := c.Query("id")
 	parseInt, err := strconv.ParseInt(dynamicId, 10, 64)
 	if err != nil {
 		logger.Error("查看动态详情请求参数有误", zap.Error(err))

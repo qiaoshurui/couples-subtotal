@@ -10,7 +10,7 @@ type Relationship struct {
 	ID           int64                 `json:"id"`
 	CoupleId     int64                 `json:"coupleId"`                                 //情侣Aid
 	PersonId     int64                 `json:"personId"`                                 //情侣Bid
-	MemorialDate time.Time             `json:"memorialDate"`                             //纪念日
+	MemorialDate time.Time             `json:"memorialDate"`                             //纪念日期
 	CreatedAt    time.Time             `json:"createdAt"`                                //创建时间
 	UpdatedAt    time.Time             `json:"updatedAt"`                                //更新时间
 	DeletedAt    time.Time             `json:"deletedAt"`                                //删除时间
@@ -34,7 +34,7 @@ func (r *Relationship) InsertRelationship(relationship *Relationship) error {
 	return db.Error
 }
 func (r *Relationship) Delete(relationship *Relationship) error {
-	db := global.Gorm.Where("couple_id=? OR person_id=?", relationship.CoupleId).Delete(&relationship)
+	db := global.Gorm.Where("couple_id=? OR person_id=?", relationship.CoupleId, relationship.CoupleId).Delete(&relationship)
 	return db.Error
 
 }

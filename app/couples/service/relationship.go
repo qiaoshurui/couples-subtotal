@@ -53,6 +53,7 @@ func (r *Relationship) RelationBinding(data *dto.RelationshipBinding) (err error
 		MemorialDate: data.MemorialDate,
 		CreatedAt:    time.Now(),
 	}
+	fmt.Println(data.MemorialDate)
 	emptyRelationship := model.GetEmptyRelationship()
 	err = emptyRelationship.InsertRelationship(relationship)
 	if err != nil {

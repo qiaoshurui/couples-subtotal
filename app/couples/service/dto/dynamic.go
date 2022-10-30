@@ -4,7 +4,6 @@ import "time"
 
 type AddDynamic struct {
 	Content string `json:"content"`
-	UserId  int64  `json:"userId"`
 	Status  int8   `json:"status"`
 }
 

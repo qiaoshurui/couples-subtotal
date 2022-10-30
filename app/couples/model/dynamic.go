@@ -26,7 +26,7 @@ func GetEmptyDynamic() *Dynamic {
 }
 func (d *Dynamic) InsertDynamic(dynamic *Dynamic) (err error) {
 	//插入数据到数据库
-	return global.Gorm.Create(&dynamic).Error
+	return global.Gorm.Select("content", "user_id", "status", "created_at").Create(&dynamic).Error
 }
 
 func (d *Dynamic) Insert() (err error) {
@@ -47,14 +47,6 @@ func (d *Dynamic) GetDynamicList(data *dto.GetDynamicList) ([]*Dynamic, error) {
 	db := global.Gorm.Table(d.TableName()).Where("content like ? ", "%"+data.Content+"%").Limit(limit).Offset(offset).Find(&dynamicList)
 	return dynamicList, db.Error
 }
-
-//func (d *Dynamic) GetDynamicList2(page, size int, content string) ([]*Dynamic, error) {
-//	limit := size
-//	offset := size * (page - 1)
-//	var dynamicList []*Dynamic
-//	db := global.Gorm.Table(d.TableName()).Where("content like ? ", "%"+content+"%").Limit(limit).Offset(offset).Find(&dynamicList)
-//	return dynamicList, db.Error
-//}
 
 func (d *Dynamic) GetDynamicDetail(id int64) (*dto.SimpleDynamicDetail, error) {
 	var dynamicDetail *dto.SimpleDynamicDetail

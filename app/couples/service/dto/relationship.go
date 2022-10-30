@@ -1,7 +1,5 @@
 package dto
 
-import "time"
-
 type CouplesInfo struct {
 	UserId        int64  `json:"userId"`
 	UserNickName  string `json:"userNickName"`
@@ -14,12 +12,12 @@ type CouplesInfo struct {
 	MemorialDay int `json:"memorialDay"` //纪念日已过去天数
 }
 type RelationshipBinding struct {
-	RegistrationCodeEncrypt string    `json:"registrationCodeEncrypt"` //加密后的注册码
-	MemorialDate            time.Time `json:"memorialDate"`            //纪念日
-	UserId                  int64     `json:"userId"`
+	RegistrationCodeEncrypt string `json:"registrationCodeEncrypt"` //加密后的注册码
+	MemorialDate            int64  `json:"memorialDate"`            //纪念日
+	UserId                  int64  `json:"userId"`
 }
 type RelationshipBinding2 struct {
-	RegistrationCodeDecryption string    `json:"registrationCodeDecryption"` //解密后的注册码
-	MemorialDate               time.Time `json:"memorialDate"`               //纪念日
-	UserId                     int64     `json:"userId"`
+	RegistrationCodeDecryption string `json:"registrationCodeDecryption"` //解密后的注册码
+	MemorialDate               int64  `json:"memorialDate"`               //纪念日
+	UserId                     int64  `json:"userId"`
 }

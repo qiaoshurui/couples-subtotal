@@ -5,8 +5,6 @@ definitions:
         type: string
       status:
         type: integer
-      userId:
-        type: integer
     type: object
   dto.AddPhotoAlbum:
     properties:
@@ -51,9 +49,20 @@ definitions:
     properties:
       memorialDate:
         description: 纪念日
-        type: string
+        type: integer
       registrationCodeEncrypt:
         description: 加密后的注册码
+        type: string
+      userId:
+        type: integer
+    type: object
+  dto.RelationshipBinding2:
+    properties:
+      memorialDate:
+        description: 纪念日
+        type: integer
+      registrationCodeDecryption:
+        description: 解密后的注册码
         type: string
       userId:
         type: integer
@@ -85,7 +94,11 @@ definitions:
     type: object
   model.SignRequest:
     properties:
+      birthday:
+        type: integer
       email:
+        type: string
+      nickName:
         type: string
       password:
         type: string
@@ -353,7 +366,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dto.RelationshipBinding'
+          $ref: '#/definitions/dto.RelationshipBinding2'
       produces:
       - application/json
       responses:

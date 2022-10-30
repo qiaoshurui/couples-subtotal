@@ -30,7 +30,7 @@ func (r *Relationship) GetByCoupleAId(coupleAId int64) error {
 	return db.Error
 }
 func (r *Relationship) InsertRelationship(relationship *Relationship) error {
-	db := global.Gorm.Create(&relationship)
+	db := global.Gorm.Select("couple_id", "person_id", "memorial_date", "created_at").Create(&relationship)
 	return db.Error
 }
 func (r *Relationship) Delete(relationship *Relationship) error {

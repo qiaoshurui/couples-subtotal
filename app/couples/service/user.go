@@ -4,6 +4,7 @@ import (
 	"github.com/pkg/errors"
 	model "github.com/qiaoshurui/couples-subtotal/app/couples/model"
 	"github.com/qiaoshurui/couples-subtotal/common/utils"
+	"time"
 )
 
 type User struct{}
@@ -23,6 +24,8 @@ func (u *User) SignUp(p *model.SignRequest) (err error) {
 		Password:              p.Password,
 		Email:                 p.Email,
 		Phone:                 p.Phone,
+		NickName:              p.NickName,
+		Birthday:              time.Unix(p.Birthday, 0),
 		RegistrationCode:      registrationCode,
 		EncryptedRegistration: encryptedRegistration,
 	}

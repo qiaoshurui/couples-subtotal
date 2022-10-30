@@ -445,7 +445,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.RelationshipBinding"
+                            "$ref": "#/definitions/dto.RelationshipBinding2"
                         }
                     }
                 ],
@@ -498,9 +498,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "type": "integer"
-                },
-                "userId": {
                     "type": "integer"
                 }
             }
@@ -568,10 +565,26 @@ const docTemplate = `{
             "properties": {
                 "memorialDate": {
                     "description": "纪念日",
-                    "type": "string"
+                    "type": "integer"
                 },
                 "registrationCodeEncrypt": {
                     "description": "加密后的注册码",
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.RelationshipBinding2": {
+            "type": "object",
+            "properties": {
+                "memorialDate": {
+                    "description": "纪念日",
+                    "type": "integer"
+                },
+                "registrationCodeDecryption": {
+                    "description": "解密后的注册码",
                     "type": "string"
                 },
                 "userId": {
@@ -621,7 +634,13 @@ const docTemplate = `{
         "model.SignRequest": {
             "type": "object",
             "properties": {
+                "birthday": {
+                    "type": "integer"
+                },
                 "email": {
+                    "type": "string"
+                },
+                "nickName": {
                     "type": "string"
                 },
                 "password": {

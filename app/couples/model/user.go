@@ -44,6 +44,8 @@ type SignRequest struct {
 	Password string `json:"password"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
+	NickName string `json:"nickName"`
+	Birthday int64  `json:"birthday"`
 }
 
 // LoginRequest 登录请求参数
@@ -86,13 +88,13 @@ func encryptPassword(oPassword string) string {
 // LoginUser 用户登录
 func LoginUser(user *User) (err error) {
 	user.Password = encryptPassword(user.Password) //加密后的密码
-	err = global.Gorm.Where("phone=? AND password=? AND is_deleted=0", user.Phone, user.Password).First(&user).Error
+	err = global.Gorm.Where("user_name=? AND password=? AND is_deleted=0", user.UserName, user.Password).First(&user).Error
 	return err
 }
 
 // ChangePassword 密码修改
 func ChangePassword(mode *ChangePasswordRequest) (err error) {
-	err = global.Gorm.Updates(&User{Password: encryptPassword(mode.NewPassword)}).Error
+	err = global.Gorm.Where("user_name=?", mode.UserName).Updates(&User{Password: encryptPassword(mode.NewPassword)}).Error
 	return err
 }
 

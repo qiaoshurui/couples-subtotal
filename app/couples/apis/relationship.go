@@ -95,7 +95,7 @@ func (r Relationship) CoupleInvitation(c *gin.Context) {
 // @Summary 情侣关系绑定（通过交换注册码进行关系绑定）
 // @Security ApiKeyAuth
 // @Produce  application/json
-// @Param data body dto.RelationshipBinding true "未加密注册码，用户id"
+// @Param data body dto.RelationshipBinding2 true "未加密注册码，用户id"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"情侣关系绑定成功"}"
 // @Router /api/v1/relationship2 [post]
 func (r Relationship) CoupleInvitation2(c *gin.Context) {

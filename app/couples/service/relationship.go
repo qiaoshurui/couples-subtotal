@@ -50,7 +50,7 @@ func (r *Relationship) RelationBinding(data *dto.RelationshipBinding) (err error
 	relationship := &model.Relationship{
 		CoupleId:     _MyId,
 		PersonId:     user.ID,
-		MemorialDate: data.MemorialDate,
+		MemorialDate: time.Unix(data.MemorialDate, 0),
 		CreatedAt:    time.Now(),
 	}
 	fmt.Println(data.MemorialDate)
@@ -65,11 +65,13 @@ func (r *Relationship) RelationBinding2(data *dto.RelationshipBinding2) (err err
 	//通过注册码找到邀请人id
 	user := model.GetEmptyUser()
 	err = user.GetUserId(data.RegistrationCodeDecryption)
+	fmt.Print(user.ID)
 	//添加数据到关系表
 	relationship := &model.Relationship{
-		CoupleId:  _MyId,
-		PersonId:  user.ID,
-		CreatedAt: time.Now(),
+		CoupleId:     _MyId,
+		PersonId:     user.ID,
+		MemorialDate: time.Unix(data.MemorialDate, 0),
+		CreatedAt:    time.Now(),
 	}
 	emptyRelationship := model.GetEmptyRelationship()
 	err = emptyRelationship.InsertRelationship(relationship)

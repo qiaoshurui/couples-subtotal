@@ -14,11 +14,11 @@ import (
 const VERSION = "v0.0.1"
 
 var (
-	Gorm   *gorm.DB
-	Viper  *viper.Viper
-	Client *cos.Client
-	Config ConfigYaml
-	Router *gin.Engine
+	Gorm      *gorm.DB
+	Viper     *viper.Viper
+	CosClient *cos.Client
+	Config    ConfigYaml
+	Router    *gin.Engine
 )
 
 type ConfigYaml struct {

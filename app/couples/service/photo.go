@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"github.com/qiaoshurui/couples-subtotal/app/couples/model"
-	"github.com/qiaoshurui/couples-subtotal/app/couples/service/dto"
 	"github.com/qiaoshurui/couples-subtotal/common/global"
 	"io"
 	"time"
@@ -12,24 +11,30 @@ import (
 
 type Photo struct{}
 
-func (p *Photo) UploadTencent(filePath string, file io.Reader) error {
-	_, err := global.Client.Object.Put(context.Background(), filePath, file, nil)
+func (p *Photo) UploadTencent(imgName string, albumId int64, file io.Reader) (string, error) {
+	PhotoAlbum := model.GetEmptyPhotoAlbum()
+	err := PhotoAlbum.GetAlbumUrl(albumId)
 	if err != nil {
-		return errors.Wrapf(err, "照片上传至腾讯云失败 FilePath：%v", filePath)
+		return "", errors.Wrapf(err, "数据库查询相册路径失败 AlbumUrl：%v", PhotoAlbum.AlbumUrl)
 	}
-	return nil
+	key := PhotoAlbum.AlbumUrl + imgName
+	_, err = global.CosClient.Object.Put(context.Background(), key, file, nil)
+	if err != nil {
+		return "", errors.Wrapf(err, "照片上传至腾讯云失败 Key：%v", key)
+	}
+	return key, nil
 }
-func (p *Photo) AddPhotoAlbum(data *dto.AddPhotoAlbum) error {
-	photoAlbum := &model.PhotoAlbum{
-		Name:      data.Name,
-		OwnerId:   _MyId,
-		Type:      data.Type,
+func (p *Photo) AddPhoto(imgUrl string, albumId int64) error {
+	photo := &model.Photo{
+		UserId:    _MyId,
+		AlbumId:   albumId,
+		ImgUrl:    imgUrl,
 		CreatedAt: time.Now(),
 	}
-	emptyPhotoAlbum := model.GetEmptyPhotoAlbum()
-	err := emptyPhotoAlbum.InsertPhotoAlbum(photoAlbum)
+	emptyPhoto := model.GetEmptyPhoto()
+	err := emptyPhoto.InsertPhoto(photo)
 	if err != nil {
-		return errors.Wrapf(err, "新增相册失败 Name：%v", data.Name)
+		return errors.Wrapf(err, "照片上传至数据库失败 ImgURl：%v", imgUrl)
 	}
 	return nil
 }

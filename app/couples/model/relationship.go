@@ -36,5 +36,10 @@ func (r *Relationship) InsertRelationship(relationship *Relationship) error {
 func (r *Relationship) Delete(relationship *Relationship) error {
 	db := global.Gorm.Where("couple_id=? OR person_id=?", relationship.CoupleId, relationship.CoupleId).Delete(&relationship)
 	return db.Error
+}
 
+// GetCoupleId 根据用户id找到情侣id
+func (r *Relationship) GetCoupleId(userId int64) error {
+	db := global.Gorm.Select("id").Where("couple_id=? OR person_id=?", userId, userId).First(&r)
+	return db.Error
 }

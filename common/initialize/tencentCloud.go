@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"fmt"
 	"github.com/qiaoshurui/couples-subtotal/common/global"
 	"github.com/tencentyun/cos-go-sdk-v5"
 	"net/http"
@@ -16,5 +17,6 @@ func InitTencentCloud() {
 			SecretKey: global.Config.TencentCloud.SecretKey,
 		},
 	})
-	global.Client = client
+	fmt.Println(global.Config.TencentCloud.SecretId)
+	global.CosClient = client
 }

@@ -14,4 +14,9 @@ log:
     server: debug
     # 关闭gorm日志使用 silent （silent、error、info、warn）
     gorm: info
-
+tencentCloud:
+  bucket-name: ""
+  region: ""
+  app-id: ""
+  secret-id: ""
+  secret-key: ""

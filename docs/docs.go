@@ -323,6 +323,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/photo": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Photo"
+                ],
+                "summary": "照片上传",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "相册id",
+                        "name": "albumId",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "照片上传",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"照片上传成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/photo-album": {
             "post": {
                 "security": [
@@ -510,7 +550,7 @@ const docTemplate = `{
                 },
                 "type": {
                     "description": "(0 情侣相册；1 个人相册)",
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },

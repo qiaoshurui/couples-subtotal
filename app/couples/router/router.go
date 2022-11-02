@@ -9,6 +9,7 @@ func InitCoupleRouter(r *gin.Engine) *gin.Engine {
 	RegisterUserRouter(v1)
 	RelationshipRouter(v1)
 	PhotoRouter(v1)
+	PhotoAlbumRouter(v1)
 	DynamicRouter(v1)
 	return r
 }

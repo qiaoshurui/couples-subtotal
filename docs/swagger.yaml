@@ -12,7 +12,7 @@ definitions:
         type: string
       type:
         description: (0 情侣相册；1 个人相册)
-        type: string
+        type: integer
     type: object
   dto.CouplesInfo:
     properties:
@@ -297,6 +297,31 @@ paths:
       summary: 登录请求函数
       tags:
       - User
+  /api/v1/photo:
+    post:
+      parameters:
+      - description: 相册id
+        in: formData
+        name: albumId
+        required: true
+        type: integer
+      - description: 照片上传
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"照片上传成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 照片上传
+      tags:
+      - Photo
   /api/v1/photo-album:
     post:
       parameters:

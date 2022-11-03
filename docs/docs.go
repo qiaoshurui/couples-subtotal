@@ -323,7 +323,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/photo": {
+        "/api/v1/photo-add": {
             "post": {
                 "security": [
                     {
@@ -393,6 +393,91 @@ const docTemplate = `{
                         "description": "{\"success\":true,\"data\":{},\"msg\":\"相册创建成功\"}",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/photo-delete": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Photo"
+                ],
+                "summary": "照片删除",
+                "parameters": [
+                    {
+                        "description": "照片id",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"照片删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/photo/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Photo"
+                ],
+                "summary": "获取照片列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "相册id",
+                        "name": "albumId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "分页获取照片列表,返回包括列表,总数",
+                        "schema": {
+                            "$ref": "#/definitions/dto.PhotoListRes"
                         }
                     }
                 }
@@ -597,6 +682,23 @@ const docTemplate = `{
                 "userNickName": {
                     "description": "动态发布者的昵称",
                     "type": "string"
+                }
+            }
+        },
+        "dto.PhotoListRes": {
+            "type": "object",
+            "properties": {
+                "albumId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "imgUrl": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
                 }
             }
         },

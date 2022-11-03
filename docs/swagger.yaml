@@ -45,6 +45,17 @@ definitions:
         description: 动态发布者的昵称
         type: string
     type: object
+  dto.PhotoListRes:
+    properties:
+      albumId:
+        type: integer
+      id:
+        type: integer
+      imgUrl:
+        type: string
+      userId:
+        type: integer
+    type: object
   dto.RelationshipBinding:
     properties:
       memorialDate:
@@ -297,7 +308,7 @@ paths:
       summary: 登录请求函数
       tags:
       - User
-  /api/v1/photo:
+  /api/v1/photo-add:
     post:
       parameters:
       - description: 相册id
@@ -343,6 +354,58 @@ paths:
       summary: 相册新增
       tags:
       - PhotoAlbum
+  /api/v1/photo-delete:
+    post:
+      parameters:
+      - description: 照片id
+        in: body
+        name: ids
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"照片删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 照片删除
+      tags:
+      - Photo
+  /api/v1/photo/list:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 相册id
+        in: query
+        name: albumId
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 分页获取照片列表,返回包括列表,总数
+          schema:
+            $ref: '#/definitions/dto.PhotoListRes'
+      security:
+      - ApiKeyAuth: []
+      summary: 获取照片列表
+      tags:
+      - Photo
   /api/v1/relationship:
     delete:
       parameters:

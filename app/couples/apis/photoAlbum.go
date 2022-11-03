@@ -9,6 +9,7 @@ import (
 	"github.com/qiaoshurui/couples-subtotal/common/res"
 	"github.com/qiaoshurui/couples-subtotal/common/utils"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 type PhotoAlbum struct {
@@ -22,7 +23,7 @@ type PhotoAlbum struct {
 // @Produce application/json
 // @Param data body dto.AddPhotoAlbum true "相册名称，相册类型"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"相册创建成功"}"
-// @Router /api/v1/photo-album  [post]
+// @Router /api/v1/upload/photo-album  [post]
 func (p *PhotoAlbum) AddPhotoAlbum(c *gin.Context) {
 	var album dto.AddPhotoAlbum
 	if err := c.ShouldBindJSON(&album); err != nil {
@@ -40,4 +41,44 @@ func (p *PhotoAlbum) AddPhotoAlbum(c *gin.Context) {
 		logger.Error("相册新增失败", zap.Error(err))
 	}
 	res.OkWithMessage(c, "相册新增成功", nil)
+}
+
+func (p *PhotoAlbum) GetAlbumList(c *gin.Context) {
+	page, size := getPageInfo(c)
+	genre := c.Query("type")
+	parseInt, _ := strconv.ParseInt(genre, 10, 64)
+	data := &dto.AlbumListRes{
+		Page:     page,
+		PageSize: size,
+		Type:     int8(parseInt),
+	}
+	album := service.PhotoAlbum{}
+	album.GetAlbumList(data)
+
+}
+
+// DeleteAlbum
+// @Tags PhotoAlbum
+// @Summary 相册删除
+// @Security ApiKeyAuth
+// @Produce application/json
+// @Param ids body []int64 true "相册id"
+// @Success 200 {string} string "{"success":true,"data":{},"msg":"相册及相册照片删除成功"}"
+// @Router /api/v1/delete/photo-album [post]
+func (p *PhotoAlbum) DeleteAlbum(c *gin.Context) {
+	var ids []int64
+	if err := c.ShouldBindJSON(&ids); err != nil {
+		logger.Error("相册删除请求参数有误", zap.Error(err))
+	}
+	photoAlbum := service.PhotoAlbum{}
+	err := photoAlbum.DeleteAlbum(ids)
+	if err != nil {
+		logger.Error("数据库照片删除失败", zap.Error(err))
+	}
+	//删除cos相册
+	err = photoAlbum.DeleteCosRecord(ids)
+	if err != nil {
+		logger.Error("腾讯云cos相册删除失败", zap.Error(err))
+	}
+	res.OkWithMessage(c, "相册及相册照片删除成功", nil)
 }

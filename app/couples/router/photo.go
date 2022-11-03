@@ -8,6 +8,8 @@ import (
 func PhotoRouter(v1 *gin.RouterGroup) {
 	photo := &apis.Photo{}
 	{
-		v1.POST("/photo", photo.AddPhoto) //照片上传
+		v1.POST("/upload/photo", photo.AddPhoto)    //照片上传
+		v1.GET("/photo/list", photo.GetPhotoList)   //查看照片列表
+		v1.POST("/delete/photo", photo.DeletePhoto) //删除照片
 	}
 }

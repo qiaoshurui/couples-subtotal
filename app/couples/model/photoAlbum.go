@@ -32,3 +32,12 @@ func (p *PhotoAlbum) GetAlbumUrl(albumId int64) error {
 	db := global.Gorm.Table(p.TableName()).Select("album_url").Where("id=?", albumId).First(&p)
 	return db.Error
 }
+func (p *PhotoAlbum) DeleteAlbums(ids []int64) error {
+	db := global.Gorm.Delete(&p, ids)
+	return db.Error
+}
+func (p *PhotoAlbum) GetUrls(albumIds []int64) ([]string, error) {
+	var albumUrls []string
+	db := global.Gorm.Table(p.TableName()).Select("album_url").Where("id IN ?", albumIds).Find(&albumUrls)
+	return albumUrls, db.Error
+}

@@ -85,7 +85,26 @@ func (p *PhotoAlbum) DeleteCosRecord(ids []int64) error {
 	}
 	return nil
 }
-func (p *PhotoAlbum) GetAlbumList(data *dto.AlbumListRes) ([]*dto.AlbumListRes, error) {
-	return nil, nil
-
+func (p *PhotoAlbum) GetAlbumList(data *dto.AlbumListReq) (albumListRes []*dto.AlbumListRes, err error) {
+	photoAlbum := model.GetEmptyPhotoAlbum()
+	albumLists, err := photoAlbum.GetAlbumList(data, _MyId)
+	if err != nil {
+		return nil, errors.Wrapf(err, "查询相册列表失败 Type: %v", data.Type)
+	}
+	for _, albumList := range albumLists {
+		emptyPhoto := model.GetEmptyPhoto()
+		photoCount, err := emptyPhoto.GetPhotoCount(albumList.Id)
+		if err != nil {
+			return nil, errors.Wrapf(err, "查询该相册的照片个数失败 AlbumId：%v", albumList.Id)
+		}
+		albumListInfo := &dto.AlbumListRes{
+			Id:         albumList.Id,
+			Name:       albumList.Name,
+			Type:       albumList.Type,
+			AlbumUrl:   albumList.AlbumUrl,
+			PhotoCount: photoCount,
+		}
+		albumListRes = append(albumListRes, albumListInfo)
+	}
+	return
 }

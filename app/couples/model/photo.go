@@ -52,5 +52,10 @@ func (p *Photo) GetUrls(ids []int64) ([]string, error) {
 func (p *Photo) DeletePhotoByAlbum(albumIds []int64) error {
 	db := global.Gorm.Where("album_id IN ?", albumIds).Delete(&p)
 	return db.Error
+}
 
+func (p *Photo) GetPhotoCount(id int64) (int64, error) {
+	var count int64
+	db := global.Gorm.Table(p.TableName()).Where("album_id=?", id).Count(&count)
+	return count, db.Error
 }

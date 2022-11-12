@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/qiaoshurui/couples-subtotal/app/couples/service/dto"
 	"github.com/qiaoshurui/couples-subtotal/common/global"
 	"gorm.io/plugin/soft_delete"
 	"time"
@@ -40,4 +41,11 @@ func (p *PhotoAlbum) GetUrls(albumIds []int64) ([]string, error) {
 	var albumUrls []string
 	db := global.Gorm.Table(p.TableName()).Select("album_url").Where("id IN ?", albumIds).Find(&albumUrls)
 	return albumUrls, db.Error
+}
+func (p *PhotoAlbum) GetAlbumList(data *dto.AlbumListReq, userId int) ([]*dto.AlbumList, error) {
+	limit := data.PageSize
+	offset := data.PageSize * (data.Page - 1)
+	var albumList []*dto.AlbumList
+	db := global.Gorm.Table(p.TableName()).Where("owner_id=? AND type=?", userId, data.Type).Limit(limit).Offset(offset).Find(&albumList)
+	return albumList, db.Error
 }

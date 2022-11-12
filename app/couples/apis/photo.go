@@ -103,3 +103,13 @@ func (p *Photo) DeletePhoto(c *gin.Context) {
 	}
 	res.OkWithMessage(c, "照片删除成功", nil)
 }
+func (p *Photo) CopyPhoto(c *gin.Context) {
+	var ids []int64
+	if err := c.ShouldBindJSON(&ids); err != nil {
+		logger.Error("照片复制请求参数有误", zap.Error(err))
+	}
+	//photo := service.Photo{}
+	//复制cos照片
+	//photo.CopyCosRecord()
+
+}

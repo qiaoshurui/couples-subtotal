@@ -43,18 +43,30 @@ func (p *PhotoAlbum) AddPhotoAlbum(c *gin.Context) {
 	res.OkWithMessage(c, "相册新增成功", nil)
 }
 
+// GetAlbumList
+// @Tags PhotoAlbum
+// @Summary 获取相册列表
+// @Security ApiKeyAuth
+// @accept application/json
+// @Produce application/json
+// @Param data query dto.AlbumListReq true "页码, 每页大小,相册类型"
+// @Success 200 {object} dto.AlbumListRes "分页获取相册列表成功"
+// @Router /api/v1/dynamic/list [get]
 func (p *PhotoAlbum) GetAlbumList(c *gin.Context) {
 	page, size := getPageInfo(c)
 	genre := c.Query("type")
 	parseInt, _ := strconv.ParseInt(genre, 10, 64)
-	data := &dto.AlbumListRes{
+	data := &dto.AlbumListReq{
 		Page:     page,
 		PageSize: size,
 		Type:     int8(parseInt),
 	}
 	album := service.PhotoAlbum{}
-	album.GetAlbumList(data)
-
+	albumList, err := album.GetAlbumList(data)
+	if err != nil {
+		logger.Error("查找相册列表失败", zap.Error(err))
+	}
+	res.OkWithMessage(c, "查找相册列表成功", albumList)
 }
 
 // DeleteAlbum

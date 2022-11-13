@@ -105,6 +105,82 @@
                 }
             }
         },
+        "/api/v1/delete/photo": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Photo"
+                ],
+                "summary": "照片删除",
+                "parameters": [
+                    {
+                        "description": "照片id",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"照片删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/delete/photo-album": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PhotoAlbum"
+                ],
+                "summary": "相册删除",
+                "parameters": [
+                    {
+                        "description": "相册id",
+                        "name": "ids",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"相册及相册照片删除成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/dynamic": {
             "get": {
                 "security": [
@@ -311,52 +387,15 @@
                 }
             }
         },
-        "/api/v1/photo-add": {
-            "post": {
+        "/api/v1/photo-album/list": {
+            "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "produces": [
+                "consumes": [
                     "application/json"
-                ],
-                "tags": [
-                    "Photo"
-                ],
-                "summary": "照片上传",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "相册id",
-                        "name": "albumId",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "file",
-                        "description": "照片上传",
-                        "name": "file",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{\"success\":true,\"data\":{},\"msg\":\"照片上传成功\"}",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/photo-album": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
                 ],
                 "produces": [
                     "application/json"
@@ -364,61 +403,32 @@
                 "tags": [
                     "PhotoAlbum"
                 ],
-                "summary": "相册新增",
+                "summary": "获取相册列表",
                 "parameters": [
                     {
-                        "description": "相册名称，相册类型",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.AddPhotoAlbum"
-                        }
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页大小",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "(0 情侣相册；1 个人相册)",
+                        "name": "type",
+                        "in": "query"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "{\"success\":true,\"data\":{},\"msg\":\"相册创建成功\"}",
+                        "description": "分页获取相册列表成功",
                         "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/photo-delete": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Photo"
-                ],
-                "summary": "照片删除",
-                "parameters": [
-                    {
-                        "description": "照片id",
-                        "name": "ids",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{\"success\":true,\"data\":{},\"msg\":\"照片删除成功\"}",
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/dto.AlbumListRes"
                         }
                     }
                 }
@@ -601,6 +611,81 @@
                     }
                 }
             }
+        },
+        "/api/v1/upload/photo": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Photo"
+                ],
+                "summary": "照片上传",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "相册id",
+                        "name": "albumId",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "照片上传",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"照片上传成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upload/photo-album": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PhotoAlbum"
+                ],
+                "summary": "相册新增",
+                "parameters": [
+                    {
+                        "description": "相册名称，相册类型",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AddPhotoAlbum"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"success\":true,\"data\":{},\"msg\":\"相册创建成功\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -623,6 +708,27 @@
                 },
                 "type": {
                     "description": "(0 情侣相册；1 个人相册)",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.AlbumListRes": {
+            "type": "object",
+            "properties": {
+                "album_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "photo_count": {
+                    "description": "照片个数",
+                    "type": "integer"
+                },
+                "type": {
                     "type": "integer"
                 }
             }

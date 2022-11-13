@@ -23,7 +23,7 @@ type Photo struct {
 // @Param albumId formData int64 true "相册id"
 // @Param file formData file true "照片上传"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"照片上传成功"}"
-// @Router /api/v1//upload/photo [post]
+// @Router /api/v1/upload/photo [post]
 func (p *Photo) AddPhoto(c *gin.Context) {
 	albumId := c.PostForm("albumId")
 	img, err := c.FormFile("file")
@@ -85,7 +85,7 @@ func (p *Photo) GetPhotoList(c *gin.Context) {
 // @Produce application/json
 // @Param ids body []int64 true "照片id"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"照片删除成功"}"
-// @Router /api/v1//delete/photo [post]
+// @Router /api/v1/delete/photo [post]
 func (p *Photo) DeletePhoto(c *gin.Context) {
 	var ids []int64
 	if err := c.ShouldBindJSON(&ids); err != nil {

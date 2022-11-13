@@ -14,6 +14,20 @@ definitions:
         description: (0 情侣相册；1 个人相册)
         type: integer
     type: object
+  dto.AlbumListRes:
+    properties:
+      album_url:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      photo_count:
+        description: 照片个数
+        type: integer
+      type:
+        type: integer
+    type: object
   dto.CouplesInfo:
     properties:
       loverHeaderImg:
@@ -182,6 +196,52 @@ paths:
       summary: 情侣关系展示页面
       tags:
       - Relationship
+  /api/v1/delete/photo:
+    post:
+      parameters:
+      - description: 照片id
+        in: body
+        name: ids
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"照片删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 照片删除
+      tags:
+      - Photo
+  /api/v1/delete/photo-album:
+    post:
+      parameters:
+      - description: 相册id
+        in: body
+        name: ids
+        required: true
+        schema:
+          items:
+            type: integer
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"相册及相册照片删除成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 相册删除
+      tags:
+      - PhotoAlbum
   /api/v1/dynamic:
     delete:
       parameters:
@@ -308,75 +368,35 @@ paths:
       summary: 登录请求函数
       tags:
       - User
-  /api/v1/photo-add:
-    post:
+  /api/v1/photo-album/list:
+    get:
+      consumes:
+      - application/json
       parameters:
-      - description: 相册id
-        in: formData
-        name: albumId
-        required: true
+      - description: 页码
+        in: query
+        name: page
         type: integer
-      - description: 照片上传
-        in: formData
-        name: file
-        required: true
-        type: file
+      - description: 每页大小
+        in: query
+        name: pageSize
+        type: integer
+      - description: (0 情侣相册；1 个人相册)
+        in: query
+        name: type
+        type: integer
       produces:
       - application/json
       responses:
         "200":
-          description: '{"success":true,"data":{},"msg":"照片上传成功"}'
+          description: 分页获取相册列表成功
           schema:
-            type: string
+            $ref: '#/definitions/dto.AlbumListRes'
       security:
       - ApiKeyAuth: []
-      summary: 照片上传
-      tags:
-      - Photo
-  /api/v1/photo-album:
-    post:
-      parameters:
-      - description: 相册名称，相册类型
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/dto.AddPhotoAlbum'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"success":true,"data":{},"msg":"相册创建成功"}'
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: 相册新增
+      summary: 获取相册列表
       tags:
       - PhotoAlbum
-  /api/v1/photo-delete:
-    post:
-      parameters:
-      - description: 照片id
-        in: body
-        name: ids
-        required: true
-        schema:
-          items:
-            type: integer
-          type: array
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"success":true,"data":{},"msg":"照片删除成功"}'
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: 照片删除
-      tags:
-      - Photo
   /api/v1/photo/list:
     get:
       consumes:
@@ -486,4 +506,50 @@ paths:
       summary: 注册请求函数
       tags:
       - User
+  /api/v1/upload/photo:
+    post:
+      parameters:
+      - description: 相册id
+        in: formData
+        name: albumId
+        required: true
+        type: integer
+      - description: 照片上传
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"照片上传成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 照片上传
+      tags:
+      - Photo
+  /api/v1/upload/photo-album:
+    post:
+      parameters:
+      - description: 相册名称，相册类型
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddPhotoAlbum'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"success":true,"data":{},"msg":"相册创建成功"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 相册新增
+      tags:
+      - PhotoAlbum
 swagger: "2.0"

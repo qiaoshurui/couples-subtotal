@@ -51,7 +51,7 @@ func (p *PhotoAlbum) AddPhotoAlbum(c *gin.Context) {
 // @Produce application/json
 // @Param data query dto.AlbumListReq true "页码, 每页大小,相册类型"
 // @Success 200 {object} dto.AlbumListRes "分页获取相册列表成功"
-// @Router /api/v1/dynamic/list [get]
+// @Router /api/v1/photo-album/list [get]
 func (p *PhotoAlbum) GetAlbumList(c *gin.Context) {
 	page, size := getPageInfo(c)
 	genre := c.Query("type")

@@ -18,7 +18,6 @@ import (
 func TestPingRoute(t *testing.T) {
 	//initialize.InitServer()
 	//api.Run()
-
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest(http.MethodGet, "/", nil)
 	global.Router.ServeHTTP(w, req)
@@ -29,7 +28,7 @@ func TestPingRoute(t *testing.T) {
 
 func TestSayHello(t *testing.T) {
 	helloService := new(service.Hello)
-	helloStr, err := helloService.SayHello("")
+	helloStr, err := helloService.SayHello("xiaoqiao")
 	assert.Nil(t, err)
 	fmt.Println(helloStr)
 }
